@@ -23,7 +23,6 @@ React.useEffect(()=>{
    const everyDiceEqual = dice.every(dice => dice.value === dice.value)
    if (everyDiceHeld && everyDiceEqual) {
         setTenzies(true)
-        return console.log("you won")
    }
     },[dice])
 
@@ -44,16 +43,20 @@ React.useEffect(()=>{
     }
 
     function rollDice(){
-        setDice(prevDice => prevDice.map(dice => {
+        if (!tenzies) {
+            setDice(prevDice => prevDice.map(dice => {
             return dice.isHeld ? dice
             : generateNewDice()
         }))
+    } else {
+        setTenzies(false)
+        setDice(allNewDice())
+    }
     }
 
     const dieNumber = dice.map(dice => <Die value={dice.value} key={dice.id} isHeld={dice.isHeld} id={dice.id} holdDice={()=>holdDice(dice.id)}/>)
 
     function holdDice(id) {
-        console.log(id)
         setDice(prevDice => 
             prevDice.map(die => {
                 return die.id === id ? 
@@ -67,12 +70,14 @@ React.useEffect(()=>{
         <div>
             <main>
                 <h1 className="title">Tenzies</h1>
-                <p className="instructions">Roll until all dice are the same. <br/>Click each die to freeze it at its current value between rolls.</p>
+                <p className="instructions">Roll until all dice are the same. 
+                <br/>Click each die to freeze it at its current value between rolls.</p>
                 <div className="dice-container">
                     {dieNumber}
                 </div>
-                <button onClick={rollDice}>Roll</button>
+                {!tenzies ? <button onClick={rollDice}>Roll</button> 
+                : <button className="new-game-btn" onClick={rollDice}>New Game</button>}
             </main>
         </div>
     )
-}
+    }

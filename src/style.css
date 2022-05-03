@@ -81,6 +81,29 @@ button:active  {
     box-shadow: 0px 1.2px 4.68px rgba(0, 0, 0, 0.18);
 }
 
+.new-game-btn   {
+    margin: 2rem;
+    background-color: #ff3572;
+    color: white;
+    border: none;
+    height: 3rem;
+    width: 8rem;
+    border-radius: 0.27rem;
+    font-size: 1.2rem;
+    box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.new-game-btn:hover {
+    background-color: #e52e65;
+}
+
+.new-game-btn:active  {
+    background-color: #c7315e;
+    box-shadow: 0px 1.2px 4.68px rgba(0, 0, 0, 0.18);
+}
+
 .instructions   {
     text-align: center;
     width: 80%;
