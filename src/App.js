@@ -1,19 +1,7 @@
 import React from "react"
 import Die from "./components/Die"
+import { nanoid } from "nanoid"
 import "./style.css"
-
-/**
- * Challenge:
- * 
- * Create state to hold our array of numbers. (Initialize
- * the state by calling our `allNewDice` function so it 
- * loads all new dice as soon as the app loads)
- * 
- * Map over the state numbers array to generate our array
- * of Die elements and render those in place of our
- * manually-written 10 Die elements.
- */
-
 
 export default function App() {
 
@@ -22,13 +10,34 @@ const [dice, setDice] = React.useState(allNewDice())
     function allNewDice() {
         const newdiceArr = []
             for (let i = 0; i < 10; i++) {
-                newdiceArr.push(Math.ceil(Math.random() * 6))
+                newdiceArr.push(
+                    {
+                        value: Math.ceil(Math.random() * 6),
+                        isHeld: false,
+                        id: nanoid()
+                    }
+                    
+                    )
             }
             return newdiceArr
     }
 
-    const dieNumber = dice.map(dice => <Die value={dice}/>
-    )
+    const dieNumber = dice.map(dice => <Die value={dice.value} key={dice.id} isHeld={dice.isHeld} id={dice.id} holdDice={()=>holdDice(dice.id)}/>)
+
+    function handleClick() {
+        setDice(allNewDice())
+    }
+
+    function holdDice(id) {
+        console.log(id)
+        setDice(prevDice => 
+            prevDice.map(die => {
+                return die.id === id ? 
+                {...die, isHeld: !die.isHeld} 
+                : die
+            })
+        )  
+    }
 
     return (
         <div>
@@ -36,8 +45,8 @@ const [dice, setDice] = React.useState(allNewDice())
                 <div className="dice-container">
                 {dieNumber}
                 </div>
+                <button onClick={handleClick}>Roll</button>
             </main>
-
         </div>
     )
 }
