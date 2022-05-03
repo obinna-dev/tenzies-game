@@ -5,25 +5,35 @@ import "./style.css"
 
 export default function App() {
 
-    /**
- * Challenge: Update the `rollDice` function to not just roll
- * all new dice, but instead to look through the existing dice
- * to NOT role any that are being `held`.
- * 
- * Hint: this will look relatively similiar to the `holdDice`
- * function below. When creating new dice, remember to use
- * `id: nanoid()` so any new dice have an `id` as well.
+const [dice, setDice] = React.useState(allNewDice())
+const [tenzies, setTenzies] = React.useState(false)
+
+
+/**
+ * This useEffect functions as a use effect to chain the two states above
+ * It checks the dice array for these winning conditions:
+    *  1. All dice are held, and
+    *  2. all dice have the same value
+ * If both conditions are true, then it sets `tenzies` state to true and logs
+ * "You won!" to the console
  */
 
-const [dice, setDice] = React.useState(allNewDice())
+React.useEffect(()=>{
+   const everyDiceHeld = dice.every(dice => dice.isHeld)
+   const everyDiceEqual = dice.every(dice => dice.value === dice.value)
+   if (everyDiceHeld && everyDiceEqual) {
+        setTenzies(true)
+        return console.log("you won")
+   }
+    },[dice])
 
-function generateNewDice() {
-    return {
-        value: Math.ceil(Math.random() * 6),
-        isHeld: false,
-        id: nanoid()
+    function generateNewDice() {
+        return {
+            value: Math.ceil(Math.random() * 6),
+            isHeld: false,
+            id: nanoid()
+        }
     }
-}
 
     function allNewDice() {
         const newdiceArr = []
@@ -42,10 +52,6 @@ function generateNewDice() {
 
     const dieNumber = dice.map(dice => <Die value={dice.value} key={dice.id} isHeld={dice.isHeld} id={dice.id} holdDice={()=>holdDice(dice.id)}/>)
 
-    // function handleClick() {
-    //     setDice(allNewDice())
-    // }
-
     function holdDice(id) {
         console.log(id)
         setDice(prevDice => 
@@ -60,8 +66,10 @@ function generateNewDice() {
     return (
         <div>
             <main>
+                <h1 className="title">Tenzies</h1>
+                <p className="instructions">Roll until all dice are the same. <br/>Click each die to freeze it at its current value between rolls.</p>
                 <div className="dice-container">
-                {dieNumber}
+                    {dieNumber}
                 </div>
                 <button onClick={rollDice}>Roll</button>
             </main>

@@ -80,3 +80,9 @@ button:active  {
     background-color: #632ab8;
     box-shadow: 0px 1.2px 4.68px rgba(0, 0, 0, 0.18);
 }
+
+.instructions   {
+    text-align: center;
+    width: 80%;
+    margin: 0 0 2rem;
+}
